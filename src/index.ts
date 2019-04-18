@@ -40,10 +40,10 @@ function draw(options: DrawOptions): void {
   ctx.translate(startX, startY);
   ctx.rotate((angle * Math.PI) / 180);
   ctx.moveTo(0, 0);
-  ctx.lineTo(0, -length);
+  ctx.lineTo(0, -branchLength);
   ctx.stroke();
 
-  if (length < 15) {
+  if (branchLength < 15) {
     ctx.restore();
     return;
   }
@@ -71,7 +71,7 @@ function draw(options: DrawOptions): void {
     ...drawOptionsShared,
     branchLength: branchLength * branchLengthDegradation,
     branchWidth: branchWidth * branchWidthDegradation,
-    angle: -changeInAngel,
+    angle: changeInAngel,
   };
 
   draw(drawOptionsFirstChild);
