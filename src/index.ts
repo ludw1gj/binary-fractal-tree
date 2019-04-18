@@ -6,6 +6,8 @@ const ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
 const genRandomNum = (max: number, min: number): number =>
   parseFloat((Math.random() * (max - min) + min).toFixed(2));
 
+type TreeType = "natural" | "symmetrical";
+
 interface DrawOptions {
   startX: number;
   startY: number;
@@ -15,7 +17,7 @@ interface DrawOptions {
   branchLengthDegradation: number;
   angle: number;
   changeInAngel: number;
-  symmetrical: boolean;
+  type: TreeType;
 }
 
 function draw(options: DrawOptions): void {
@@ -28,7 +30,7 @@ function draw(options: DrawOptions): void {
     branchLengthDegradation,
     angle,
     changeInAngel,
-    symmetrical,
+    type,
   } = options;
 
   ctx.lineWidth = branchWidth;
@@ -46,7 +48,7 @@ function draw(options: DrawOptions): void {
     return;
   }
 
-  if (!symmetrical) {
+  if (type === "natural") {
     options.branchLengthDegradation = genRandomNum(0.85, 0.8);
     options.branchWidthDegradation = genRandomNum(0.8, 0.7);
     options.changeInAngel = genRandomNum(30, 10);
@@ -77,7 +79,7 @@ function draw(options: DrawOptions): void {
   ctx.restore();
 }
 
-const options = {
+const options: DrawOptions = {
   startX: 500,
   startY: 700,
   branchWidth: genRandomNum(15, 5),
@@ -86,7 +88,7 @@ const options = {
   branchLengthDegradation: genRandomNum(0.85, 0.8),
   angle: 0,
   changeInAngel: genRandomNum(30, 10),
-  symmetrical: true,
+  type: "natural",
 };
 
 draw(options);
