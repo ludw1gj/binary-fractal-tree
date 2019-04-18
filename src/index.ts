@@ -3,8 +3,16 @@ canvas.width = 1000;
 canvas.height = 700;
 const ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
 
-const genRandomNum = (max: number, min: number): number =>
-  parseFloat((Math.random() * (max - min) + min).toFixed(2));
+function genRandomNum(max: number, min: number): number {
+  return parseFloat((Math.random() * (max - min) + min).toFixed(2));
+}
+
+function randomProbability(percentage: number): boolean {
+  if (percentage < 0 || percentage > 1) {
+    throw new Error("Probability must be between 0 and 1");
+  }
+  return Math.random() > 1 - percentage;
+}
 
 type TreeType = "natural" | "symmetrical";
 
@@ -18,6 +26,7 @@ interface DrawOptions {
   angle: number;
   changeInAngel: number;
   type: TreeType;
+  splitProbability: number;
 }
 
 function draw(options: DrawOptions): void {
@@ -31,6 +40,7 @@ function draw(options: DrawOptions): void {
     angle,
     changeInAngel,
     type,
+    splitProbability,
   } = options;
 
   ctx.lineWidth = branchWidth;
@@ -58,24 +68,27 @@ function draw(options: DrawOptions): void {
     ...options,
     startX: 0,
     startY: -branchLength,
+    splitProbability,
   };
 
-  const drawOptionsFirstChild = {
-    ...drawOptionsShared,
-    branchLength: branchLength * branchLengthDegradation,
-    branchWidth: branchWidth * branchWidthDegradation,
-    angle: -changeInAngel,
-  };
-
-  const drawOptionsSecondChild = {
-    ...drawOptionsShared,
-    branchLength: branchLength * branchLengthDegradation,
-    branchWidth: branchWidth * branchWidthDegradation,
-    angle: changeInAngel,
-  };
-
-  draw(drawOptionsFirstChild);
-  draw(drawOptionsSecondChild);
+  if (randomProbability(1 - splitProbability)) {
+    const drawOptionsFirstChild = {
+      ...drawOptionsShared,
+      branchLength: branchLength * branchLengthDegradation,
+      branchWidth: branchWidth * branchWidthDegradation,
+      angle: -changeInAngel,
+    };
+    draw(drawOptionsFirstChild);
+  }
+  if (randomProbability(1 - splitProbability)) {
+    const drawOptionsSecondChild = {
+      ...drawOptionsShared,
+      branchLength: branchLength * branchLengthDegradation,
+      branchWidth: branchWidth * branchWidthDegradation,
+      angle: changeInAngel,
+    };
+    draw(drawOptionsSecondChild);
+  }
   ctx.restore();
 }
 
@@ -89,6 +102,7 @@ const options: DrawOptions = {
   angle: 0,
   changeInAngel: genRandomNum(30, 10),
   type: "natural",
+  splitProbability: 0.02,
 };
 
 draw(options);
