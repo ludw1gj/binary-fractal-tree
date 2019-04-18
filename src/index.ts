@@ -13,15 +13,12 @@ interface DrawOptions {
   branchWidthDegradation: number;
   branchLength: number;
   branchLengthDegradation: number;
-  angle?: number;
+  angle: number;
   changeInAngel: number;
   symmetrical: boolean;
 }
 
 function draw(options: DrawOptions): void {
-  if (!options.angle) {
-    options.angle = 0;
-  }
   const {
     startX,
     startY,
