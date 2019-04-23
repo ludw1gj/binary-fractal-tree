@@ -1,14 +1,12 @@
 {
   "compilerOptions": {
-    "target": "esnext",
+    "target": "es2015",
     "module": "commonjs",
-
-    "outDir": "lib",
-    "sourceMap": true,
     "declaration": true,
+    "outDir": "./lib",
     "strict": true,
-    "allowSyntheticDefaultImports": true,
     "esModuleInterop": true
   },
-  "include": ["src"]
+  "include": ["src"],
+  "exclude": ["node_modules"]
 }
