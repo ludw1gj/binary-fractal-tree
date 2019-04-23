@@ -1,6 +1,6 @@
 {
   "name": "@ludw1gj/binary-fractal-tree",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "description": "Draws a binary fractal tree using a HTML5 canvas and a 2D context.",
   "main": "lb/index.js",
   "types": "lib/index.d.ts",
@@ -29,7 +29,7 @@
   "files": [
     "lib/**/*"
   ],
-  "dependencies": {
+  "devDependencies": {
     "prettier": "^1.17.0",
     "tslint": "^5.16.0",
     "tslint-config-prettier": "^1.18.0",
