@@ -1,24 +1,14 @@
 {
   "compilerOptions": {
-    "target": "es2015",
+    "target": "esnext",
     "module": "commonjs",
 
-    "strict": true,
-    "sourceMap": true,
-
-    "declaration": true,
     "outDir": "lib",
+    "sourceMap": true,
+    "declaration": true,
+    "strict": true,
     "allowSyntheticDefaultImports": true,
-    "esModuleInterop": true,
-
-    "noFallthroughCasesInSwitch": true,
-    "noImplicitAny": true,
-    "noImplicitReturns": true,
-    "noImplicitThis": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-
-    "forceConsistentCasingInFileNames": true
+    "esModuleInterop": true
   },
   "include": ["src"]
 }
