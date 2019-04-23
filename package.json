@@ -1,8 +1,8 @@
 {
   "name": "@ludw1gj/binary-fractal-tree",
-  "version": "0.5.3",
+  "version": "0.5.5",
   "description": "Draws a binary fractal tree using a HTML5 canvas and a 2D context.",
-  "main": "lb/index.js",
+  "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "scripts": {
     "build": "tsc",
