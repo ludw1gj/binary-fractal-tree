@@ -1,8 +1,9 @@
 {
-  "name": "binary-fractal-tree",
-  "version": "1.0.0",
-  "description": "",
+  "name": "@ludw1gj/binary-fractal-tree",
+  "version": "0.5.0",
+  "description": "Draws a binary fractal tree using a HTML5 canvas and a 2D context.",
   "main": "lb/index.js",
+  "types": "lib/index.d.ts",
   "scripts": {
     "build": "tsc",
     "watch": "tsc --watch & nodemon dist",
@@ -14,8 +15,20 @@
     "version": "npm run format && git add -A src",
     "postversion": "git push && git push --tags"
   },
-  "author": "",
+  "author": "ludw1gj",
   "license": "ISC",
+  "keywords": [
+    "HTMLCanvasElement",
+    "DOM",
+    "Typescript"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ludw1gj/binary-fractal-tree.git"
+  },
+  "files": [
+    "lib/**/*"
+  ],
   "dependencies": {
     "prettier": "^1.17.0",
     "tslint": "^5.16.0",
