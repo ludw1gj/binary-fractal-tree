@@ -66,7 +66,7 @@ export class BinaryFractalTree {
       splitProbability,
     };
 
-    if (BinaryFractalTree.randomProbability(1 - splitProbability)) {
+    if (type === "symmetrical" || BinaryFractalTree.randomProbability(1 - splitProbability)) {
       const drawOptionsFirstChild = {
         ...drawOptionsShared,
         branchLength: branchLength * branchLengthDegradation,
@@ -75,7 +75,7 @@ export class BinaryFractalTree {
       };
       this.draw(drawOptionsFirstChild);
     }
-    if (BinaryFractalTree.randomProbability(1 - splitProbability)) {
+    if (type === "symmetrical" || BinaryFractalTree.randomProbability(1 - splitProbability)) {
       const drawOptionsSecondChild = {
         ...drawOptionsShared,
         branchLength: branchLength * branchLengthDegradation,
