@@ -1,100 +1,87 @@
-export type TreeType = "natural" | "symmetrical";
+import { DrawOptions } from "./types";
 
-export interface DrawOptions {
-  startX: number;
-  startY: number;
-  branchWidth: number;
-  branchWidthDegradation: number;
-  branchLength: number;
-  branchLengthDegradation: number;
-  angle: number;
-  changeInAngel: number;
-  type: TreeType;
-  splitProbability: number;
-}
+export const createCanvasContext = (
+  canvas: HTMLCanvasElement,
+  width: number,
+  height: number
+): CanvasRenderingContext2D => {
+  canvas.width = width;
+  canvas.height = height;
+  return canvas.getContext("2d") as CanvasRenderingContext2D;
+};
 
-export class BinaryFractalTree {
-  private ctx: CanvasRenderingContext2D;
+export const drawTree = (
+  ctx: CanvasRenderingContext2D,
+  options: DrawOptions
+): void => {
+  const {
+    startX,
+    startY,
+    branchWidth,
+    branchLength,
+    angle,
+    type,
+    splitProbability,
+  } = options;
+  const branchWidthDegradation =
+    type === "natural"
+      ? generateRandomNumber(0.8, 0.7)
+      : options.branchWidthDegradation;
+  const branchLengthDegradation =
+    type === "natural"
+      ? generateRandomNumber(0.85, 0.8)
+      : options.branchLengthDegradation;
+  const changeInAngel =
+    type === "natural" ? generateRandomNumber(30, 10) : options.changeInAngel;
 
-  constructor(canvas: HTMLCanvasElement, width: number, height: number) {
-    canvas.width = width;
-    canvas.height = height;
+  ctx.lineWidth = branchWidth;
+  ctx.beginPath();
+  ctx.save();
 
-    const ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
-    this.ctx = ctx;
+  ctx.translate(startX, startY);
+  ctx.rotate((angle * Math.PI) / 180);
+  ctx.moveTo(0, 0);
+  ctx.lineTo(0, -branchLength);
+  ctx.stroke();
+
+  if (branchLength < 15) {
+    ctx.restore();
+    return;
   }
 
-  public draw(options: DrawOptions): void {
-    const {
-      startX,
-      startY,
-      branchWidth,
-      branchWidthDegradation,
-      branchLength,
-      branchLengthDegradation,
-      angle,
-      changeInAngel,
-      type,
-      splitProbability,
-    } = options;
-
-    this.ctx.lineWidth = branchWidth;
-    this.ctx.beginPath();
-    this.ctx.save();
-
-    this.ctx.translate(startX, startY);
-    this.ctx.rotate((angle * Math.PI) / 180);
-    this.ctx.moveTo(0, 0);
-    this.ctx.lineTo(0, -branchLength);
-    this.ctx.stroke();
-
-    if (branchLength < 15) {
-      this.ctx.restore();
-      return;
-    }
-
-    if (type === "natural") {
-      options.branchLengthDegradation = BinaryFractalTree.generateRandomNumber(0.85, 0.8);
-      options.branchWidthDegradation = BinaryFractalTree.generateRandomNumber(0.8, 0.7);
-      options.changeInAngel = BinaryFractalTree.generateRandomNumber(30, 10);
-    }
-
-    const drawOptionsShared = {
-      ...options,
-      startX: 0,
-      startY: -branchLength,
-      splitProbability,
-    };
-
-    if (type === "symmetrical" || BinaryFractalTree.randomProbability(1 - splitProbability)) {
-      const drawOptionsFirstChild = {
-        ...drawOptionsShared,
-        branchLength: branchLength * branchLengthDegradation,
-        branchWidth: branchWidth * branchWidthDegradation,
-        angle: -changeInAngel,
-      };
-      this.draw(drawOptionsFirstChild);
-    }
-    if (type === "symmetrical" || BinaryFractalTree.randomProbability(1 - splitProbability)) {
-      const drawOptionsSecondChild = {
-        ...drawOptionsShared,
-        branchLength: branchLength * branchLengthDegradation,
-        branchWidth: branchWidth * branchWidthDegradation,
-        angle: changeInAngel,
-      };
-      this.draw(drawOptionsSecondChild);
-    }
-    this.ctx.restore();
+  const nextOptions = {
+    ...options,
+    startX: 0,
+    startY: -branchLength,
+    splitProbability,
+    branchWidthDegradation,
+    branchLengthDegradation,
+    changeInAngel,
+  };
+  if (type === "symmetrical" || randomProbability(1 - splitProbability)) {
+    drawTree(ctx, {
+      ...nextOptions,
+      angle: -changeInAngel,
+    });
   }
-
-  public static generateRandomNumber(max: number, min: number): number {
-    return parseFloat((Math.random() * (max - min) + min).toFixed(2));
+  if (type === "symmetrical" || randomProbability(1 - splitProbability)) {
+    drawTree(ctx, {
+      ...nextOptions,
+      angle: changeInAngel,
+    });
   }
+  ctx.restore();
+};
 
-  public static randomProbability(percentage: number): boolean {
-    if (percentage < 0 || percentage > 1) {
-      throw new Error("Probability must be between 0 and 1");
-    }
-    return Math.random() > 1 - percentage;
+const generateRandomNumber = (max: number, min: number): number =>
+  parseFloat((Math.random() * (max - min) + min).toFixed(2));
+
+const randomProbability = (percentage: number): boolean => {
+  if (percentage < 0 || percentage > 1) {
+    console.warn(
+      "Probability must be between 0 and 1. Defaulting percentage to 0.5"
+    );
+    return Math.random() > 0.5;
   }
-}
+  return Math.random() > 1 - percentage;
+};
