@@ -2,18 +2,24 @@
   "name": "@ludw1gj/binary-fractal-tree",
   "version": "0.5.8",
   "description": "Draws a binary fractal tree using a HTML5 canvas and a 2D context.",
-  "main": "lib/index.js",
-  "types": "lib/index.d.ts",
+  "type": "module",
+  "main": "./dist/binary-fractal-tree.umd.cjs",
+  "module": "./dist/binary-fractal-tree.js",
+  "exports": {
+    ".": {
+      "import": "./dist/binary-fractal-tree.js",
+      "require": "./dist/binary-fractal-tree.umd.cjs"
+    }
+  },
+  "files": [
+    "dist"
+  ],
   "scripts": {
-    "build": "tsc",
-    "watch": "tsc --watch & nodemon dist",
-    "format": "prettier --write \"src/**/*.ts\" \"src/**/*.js\"",
-    "lint": "tslint -p tsconfig.json",
-    "prepare": "npm run build",
-    "prepublishOnly": "npm run lint",
-    "preversion": "npm run lint",
-    "version": "npm run format && git add -A src",
-    "postversion": "git push && git push --tags"
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "test": "vitest",
+    "coverage": "vitest run --coverage"
   },
   "author": "ludw1gj",
   "license": "ISC",
@@ -24,16 +30,13 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://gitlab.com/ludw1gj/binary-fractal-tree.git"
+    "url": "git+https://github.com/ludw1gj/binary-fractal-tree.git"
   },
-  "files": [
-    "lib/**/*"
-  ],
   "devDependencies": {
-    "prettier": "^1.17.0",
-    "tslint": "^5.16.0",
-    "tslint-config-prettier": "^1.18.0",
-    "tslint-no-circular-imports": "^0.6.2",
-    "typescript": "^3.4.3"
+    "prettier": "^2.8.1",
+    "typescript": "^4.9.4",
+    "vite": "^4.0.3",
+    "vite-plugin-dts": "^1.7.1",
+    "vitest": "^0.26.2"
   }
 }
