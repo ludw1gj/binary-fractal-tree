@@ -12,11 +12,6 @@ export const createCanvasContext = (
 
 export const drawTree = (ctx: CanvasRenderingContext2D, options: DrawOptions): void => {
   const { startX, startY, branchWidth, branchLength, angle, type, splitProbability } = options
-  const branchWidthDegradation =
-    type === 'natural' ? generateRandomNumber(0.8, 0.7) : options.branchWidthDegradation
-  const branchLengthDegradation =
-    type === 'natural' ? generateRandomNumber(0.85, 0.8) : options.branchLengthDegradation
-  const changeInAngel = type === 'natural' ? generateRandomNumber(30, 10) : options.changeInAngel
 
   ctx.lineWidth = branchWidth
   ctx.beginPath()
@@ -33,25 +28,29 @@ export const drawTree = (ctx: CanvasRenderingContext2D, options: DrawOptions): v
     return
   }
 
+  const isSymmetrical = type === 'symmetrical'
   const nextOptions = {
     ...options,
     startX: 0,
     startY: -branchLength,
-    splitProbability,
-    branchWidthDegradation,
-    branchLengthDegradation,
-    changeInAngel,
+    branchWidthDegradation: isSymmetrical
+      ? options.branchWidthDegradation
+      : generateRandomNumber(0.8, 0.7),
+    branchLengthDegradation: isSymmetrical
+      ? options.branchLengthDegradation
+      : generateRandomNumber(0.85, 0.8),
+    changeInAngel: isSymmetrical ? options.changeInAngel : generateRandomNumber(30, 10),
   }
-  if (type === 'symmetrical' || randomProbability(1 - splitProbability)) {
+  if (isSymmetrical || randomProbability(1 - splitProbability)) {
     drawTree(ctx, {
       ...nextOptions,
-      angle: -changeInAngel,
+      angle: -nextOptions.changeInAngel,
     })
   }
-  if (type === 'symmetrical' || randomProbability(1 - splitProbability)) {
+  if (isSymmetrical || randomProbability(1 - splitProbability)) {
     drawTree(ctx, {
       ...nextOptions,
-      angle: changeInAngel,
+      angle: nextOptions.changeInAngel,
     })
   }
   ctx.restore()
